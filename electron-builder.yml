@@ -2,6 +2,10 @@ directories:
   buildResources: buildResources
   output: dist
 extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
+# Native BLE bindings (N-API prebuilds) cannot be loaded from inside the
+# asar archive; keep the whole module unpacked.
+asarUnpack:
+  - "**/node_modules/@stoprocent/**"
 
 appId: 'haoxuekeji.com.hxblock-link'
 productName: "HXBlock Link"
