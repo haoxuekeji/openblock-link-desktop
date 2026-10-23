@@ -33,7 +33,6 @@ let dataPath;
 let makeTrayMenu = () => {};
 
 const showOperationFailedMessageBox = err => {
-    console.log(err)
     dialog.showMessageBox({
         type: 'error',
         buttons: ['Ok'],
@@ -343,7 +342,6 @@ const createWindow = () => {
     // if current version is newer then cache log, delet the data cache dir and write the
     // new version into the cache file.
     const oldVersion = nodeStorage.getItem('version');
-    console.log(oldVersion)
     if (oldVersion) {
         if (compareVersions.compare(appVersion, oldVersion, '>')) {
             if (fs.existsSync(dataPath)) {
@@ -364,19 +362,18 @@ const createWindow = () => {
     // start link server
     const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
     link.listen();
-    console.log(dataPath, resourcePath)
     // start resource server
     resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
-    //resourceServer.listen();
+    // resourceServer.listen();
 
     resourceServer.initializeResources()
-    .then(() => {
-        resourceServer.listen();
-    })
-    .catch(e => {
+        .then(() => {
+            resourceServer.listen();
+        })
+        .catch(() => {
         // Delet error cache dir and exit
-        //this.clearCache(false);
-    });
+        // this.clearCache(false);
+        });
 
 
     appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/hx-logo.ico')));
